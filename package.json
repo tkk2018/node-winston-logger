@@ -1,21 +1,24 @@
 {
   "name": "winston-logger",
   "version": "1.0.0",
+  "private": true,
   "description": "",
-  "main": "index.js",
-  "types": "index.d.ts",
-  "type": "module",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "npx tsc --build tsconfig.json"
-  },
-  "author": "",
   "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "npx tsc --build tsconfig.json",
+    "clean": "npx tsc --build --clean",
+    "rebuild": "npm run clean && npm run build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
   "devDependencies": {
     "@types/node": "^20.3.1",
     "typescript": "^5.1.6"
   },
-  "dependencies": {
+  "peerDependencies": {
     "logger": "file:../logger",
     "serialize-error": "^11.0.0",
     "winston": "^3.9.0",
