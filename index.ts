@@ -43,7 +43,7 @@ export const defaultDailyRotateFileOptions = {
   maxSize: "20m",
 };
 
-export function defaultTransposrts(options?: DefaultTransportOptions): Transport[] {
+export function defaultTransports(options?: DefaultTransportOptions): Transport[] {
   return [
     new transports.Console(options?.console),
     new transports.DailyRotateFile(options?.dailyRotateFile ?? defaultDailyRotateFileOptions),
@@ -59,7 +59,10 @@ export const defaultTransportFormats = combine(
 export class WinstonLogger extends BaseLogger {
   #winston: winston.Logger;
 
-  constructor(level: LogLevel, transports: Transport[]) {
+  constructor(
+    level: LogLevel,
+    transports: Transport[],
+  ) {
     super(level);
     this.#winston = createLogger({
       level,
@@ -68,13 +71,18 @@ export class WinstonLogger extends BaseLogger {
     });
   }
 
-  write<T>(log: LogConfig<T>): void {
-    this.#winston[log.level]({
-      id: log.id,
-      level: log.level,
-      message: log.message,
-      type: log.type,
-      meta: serialize(log.meta),
+  get winstonInstance(): winston.Logger {
+    return this.#winston;
+  }
+
+  write<T>(config: LogConfig<T>): void {
+    const serialized = {} as LogConfig<T>;
+    (Object.keys(config) as Array<keyof LogConfig<T>>).forEach((key) => {
+      const val = key === "meta"
+        ? serialize(config[key])
+        : config[key];
+      (serialized[key] as typeof val) = val;
     });
+    this.#winston[config.level](serialized);
   }
 };
