@@ -11,8 +11,7 @@
   "scripts": {
     "build": "npx tsc --build tsconfig.json",
     "clean": "npx tsc --build --clean",
-    "rebuild": "npm run clean && npm run build",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "rebuild": "npm run clean && npm run build"
   },
   "devDependencies": {
     "@types/json-stringify-safe": "^5.0.0",
@@ -22,7 +21,7 @@
   },
   "peerDependencies": {
     "json-stringify-safe": "^5.0.1",
-    "logger": "file:../logger",
+    "logger": "^1.0.0",
     "serialize-error": "^11.0.0",
     "uuid": "^9.0.0",
     "winston": "^3.9.0",
