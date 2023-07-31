@@ -16,12 +16,19 @@ export type DefaultTransportOptions = {
   dailyRotateFile?: DailyRotateFileTransportOptions
 }
 
-export function serialize<T>(o: T): Record<string, any> | null{
+export function serialize<T>(o: T): Record<string, any> | any[] | null {
   if (!o) {
     return null;
   }
   if (o instanceof Error) {
     return serializeError(o);
+  }
+  else if (Array.isArray(o)) {
+    const arr: any[] = [];
+    o.forEach((v) => {
+      arr.push(serialize(v));
+    });
+    return arr;
   }
   else if (o instanceof Object) {
     const serialized = {} as Record<string, any>;
@@ -51,8 +58,8 @@ export function defaultTransports(options?: DefaultTransportOptions): Transport[
 };
 
 export const defaultTransportFormats = combine(
-  json(),
   timestamp(),
+  json(),
   errors({ stack: true }),
 );
 
