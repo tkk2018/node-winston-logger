@@ -1,15 +1,12 @@
-"use strict";
-
+import { BaseLogger, LogConfig, LogLevel } from "logger";
+import { serializeError } from "serialize-error";
 import * as winston from "winston";
 import "winston-daily-rotate-file";
 import { DailyRotateFileTransportOptions } from "winston-daily-rotate-file";
 import Transport from "winston-transport";
+
 const { createLogger, format, transports } = winston;
 const { combine, timestamp, errors, json } = format;
-
-import { BaseLogger, LogConfig, LogLevel } from "logger";
-
-import { serializeError } from "serialize-error";
 
 export type DefaultTransportOptions = {
   console?: winston.transports.ConsoleTransportOptions,
