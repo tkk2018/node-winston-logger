@@ -8,7 +8,12 @@ import Transport from "winston-transport";
 const { createLogger, format, transports } = winston;
 const { combine, timestamp, errors, json } = format;
 
-export type DefaultTransportOptions = {
+export type DefaultTransportEnabled = {
+  console?: boolean,
+  dailyRotateFile?: boolean,
+};
+
+export type DefaultTransportOption = {
   console?: winston.transports.ConsoleTransportOptions,
   dailyRotateFile?: DailyRotateFileTransportOptions
 }
@@ -47,11 +52,17 @@ export const defaultDailyRotateFileOptions = {
   maxSize: "20m",
 };
 
-export function defaultTransports(options?: DefaultTransportOptions): Transport[] {
-  return [
-    new transports.Console(options?.console),
-    new transports.DailyRotateFile(options?.dailyRotateFile ?? defaultDailyRotateFileOptions),
-  ];
+export function defaultTransports(transport?: DefaultTransportEnabled, option?: DefaultTransportOption): Transport[] {
+  const trans: Transport[] = [];
+  const console = transport?.console ?? true;
+  const dailyRotateFile = transport?.dailyRotateFile ?? true;
+  if (console) {
+    trans.push(new transports.Console(option?.console));
+  }
+  if (dailyRotateFile) {
+    trans.push(new transports.DailyRotateFile(option?.dailyRotateFile ?? defaultDailyRotateFileOptions));
+  }
+  return trans;
 };
 
 export const defaultTransportFormats = combine(
