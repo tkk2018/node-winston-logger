@@ -16,12 +16,9 @@ export type DefaultTransportEnabled = {
 export type DefaultTransportOption = {
   console?: winston.transports.ConsoleTransportOptions,
   dailyRotateFile?: DailyRotateFileTransportOptions
-}
+};
 
-export function serialize<T>(o: T): Record<string, any> | any[] | null {
-  if (!o) {
-    return null;
-  }
+export function serialize<T>(o: T): Record<string, any> | any[] | any | null {
   if (o instanceof Error) {
     return serializeError(o);
   }
@@ -42,7 +39,7 @@ export function serialize<T>(o: T): Record<string, any> | any[] | null {
   else {
     return o;
   }
-}
+};
 
 export const defaultDailyRotateFileOptions = {
   dirname: "./logs",
