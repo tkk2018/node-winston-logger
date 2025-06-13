@@ -57,7 +57,7 @@ export function defaultTransports(transport?: DefaultTransportEnabled, option?: 
     trans.push(new transports.Console(option?.console));
   }
   if (dailyRotateFile) {
-    trans.push(new transports.DailyRotateFile(option?.dailyRotateFile ?? defaultDailyRotateFileOptions));
+    trans.push(new transports.DailyRotateFile(Object.assign({}, defaultDailyRotateFileOptions, option?.dailyRotateFile)));
   }
   return trans;
 };
